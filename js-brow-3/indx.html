@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Local Storage</title>
+  </head>
+  <body>
+    <form>
+        <label for="name">Ingresa tu nombre</label>
+        <input type="text" id="name" name="name" placeholder="Ingresa tu nombre">
+        <input type="email" name="Email"  id="correo" placeholder="Ingresa tu correo">
+        <button type="submit">Guardar</button>
+      </form>
+
+    <section>
+        <h3>Nombre guardado</h3>
+        <p id="nombreGuardado"></p>
+        <p id="emailGuardado"></p>
+        <button id="boton">Borrar nombre</button>
+    </section>
+
+   <script >
+     //obtener informacion de DOM
+      const form = document.querySelector('form');
+      const input = document.querySelector('#name');
+      const section = document.querySelector('section');
+      const nombre_guardado = document.querySelector('#nombreGuardado')
+      const botonEliminar = document.querySelector ('#boton');
+      const inputEmail = document.querySelector('#correo');
+      const emailGuardado = document.querySelector('#emailGuardado')
+      
+      // Manejar el evento de enviar el formulario
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const data = {
+            name: input.value,
+            email: inputEmail.value
+        }
+
+        localStorage.setItem('user', JSON.stringify(data))
+        location.reload();
+      });
+    
+      // Función para mostrar el nombre guardado en localStorage
+      function showName() {
+        const nombre = localStorage.getItem('user')
+        const nombreFormateado = JSON.parse(nombre)
+
+        if(!nombre){
+            return nombre_guardado.textContent = 'No hay datos'
+        }
+        nombre_guardado.textContent = nombreFormateado.name
+        emailGuardado.textContent = nombreFormateado.email
+      }
+     
+      // Función para borrar el nombre guardado en localStorage
+      function deleteName() {
+        localStorage.removeItem("user")
+        location.reload();
+      }
+
+      botonEliminar.addEventListener('click' , ()=> deleteName()); 
+
+      // Mostrar el nombre guardado al cargar la página
+      showName();
+    </script>
+  </body>
+</html>
